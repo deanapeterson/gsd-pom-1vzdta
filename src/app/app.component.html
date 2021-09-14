@@ -1,0 +1,71 @@
+<a href="https://stackblitz.com/edit/gsd-pom" target="_BLANK">Edit Me</a>
+<div class="wrapper">
+  <div>
+    <div class="grid-x">
+      <div class="cell">
+        <div *ngIf="!running">
+          <h3>Select Time:</h3>
+          <div class="preset-buttons">
+            <button
+              *ngFor="let preset of presets"
+              mat-stroked-button
+              (click)="start(preset)"
+            >
+              {{preset[1]}}
+            </button>
+          </div>
+        </div>
+        <div *ngIf="running">
+          <h3>Running...</h3>
+          <div class="indicator-wrapper">
+            <div class="indicator" [style.width]="width"></div>
+            <div class="remaining-text">
+              <span *ngIf="paused">PAUSED - </span>
+              <span *ngIf="running">{{remaining}} Remaining</span>
+              <span *ngIf="completed">Completed</span>
+            </div>
+          </div>
+          <br />
+          <div class="action-buttons">
+            <button
+              mat-flat-button
+              *ngIf="running"
+              color="primary"
+              (click)="paused = !paused"
+            >
+              <span [style.display]="paused ? 'inline' : 'none'">Resume</span>
+              <span [style.display]="paused ? 'none': 'inline'">Pause</span>
+            </button>
+
+            <button mat-flat-button color="secondary" (click)="reset(false)">
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="cell">
+        <h3>Tasks:</h3>
+        <app-notes [uid]="'tasks'"></app-notes>
+      </div>
+    </div>
+    <br />
+
+    <hr />
+  </div>
+  <div class="grid-x grid-margin-x">
+    <div class="cell large-6">
+      <strong>Notes:</strong>
+      <app-notes [uid]="'notes'"></app-notes>
+    </div>
+    <div class="cell large-6">
+      <strong>App Ideas:</strong>
+      <app-notes [uid]="'app_ideas'"></app-notes>
+    </div>
+  </div>
+</div>
+<div *ngIf="completed" class="completed-overlay" (click)="reset()">
+  <div class="completed-inner">
+    COMPLETED!!! <br />
+    Click anywhere to reset
+  </div>
+</div>
